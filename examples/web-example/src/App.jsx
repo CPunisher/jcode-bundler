@@ -2,10 +2,17 @@ import { Message, Grid, Form, Button, Input } from '@arco-design/web-react'
 import { useCallback, useEffect, useState } from 'react';
 import './App.css'
 import CodeBlock from './CodeBlock';
+import NetGraph from './NetGraph';
 
 function App() {
   const [rawUrl, setRawUrl] = useState("https://code.juejin.cn/api/raw/7181761498023198779?id=7181761498023215163")
-  const [bundleResult, setBundleResult] = useState({})
+  const [bundleResult, setBundleResult] = useState({
+    code: '',
+    graph: {
+      nodes: {},
+      edges: {},
+    }
+  })
 
   const bundle = useCallback(() => {
     fetch('/api/bundle', {
@@ -55,6 +62,7 @@ function App() {
         </div>
         <div className='result-block'>
           <h2>依赖图</h2>
+          <NetGraph data={bundleResult.graph} />
           <CodeBlock lang="json" code={JSON.stringify(bundleResult.graph ?? {}, null, 4)} />
         </div>
       </div>
